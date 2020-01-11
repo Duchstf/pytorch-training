@@ -2,9 +2,9 @@
 # encoding: utf-8
 
 # File        : Data_loader.py
-# Author      : Ben Wu
-# Contact     : benwu@fnal.gov
-# Date        : 2018 Apr 05
+# Author      : Ben Wu & Duc Hoang
+# Contact     : benwu@fnal.gov & minhduc8199@gmail.com
+# Date        : 2018 Apr 05. Updated on 12/22/19 by Duc
 #
 # Description : Function for handling data loading and preprocessing
 
@@ -19,7 +19,7 @@ from torch.utils.data import Dataset
 
 def get_features(options, yamlConfig):
     # To use one data file:
-    h5File = h5py.File(options.inputFile)
+    h5File = h5py.File(options.inputFile, "r")
     treeArray = h5File[options.tree][()]
 
     # List of features to use

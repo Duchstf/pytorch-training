@@ -18,7 +18,7 @@ filedir = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0,os.path.join(filedir, "..", "models"))
 import models
 
-from sklearn.metrics import roc_curve, auc
+#from sklearn.metrics import roc_curve, auc
 from optparse import OptionParser
 from torch import nn
 from torch.autograd import Variable
@@ -31,10 +31,10 @@ if __name__ == "__main__":
     parser.add_option('-t','--tree'   ,action='store',type='string',dest='tree'   ,default='t_allpar_new', help='tree name')
     parser.add_option('-g','--disableGPU'   ,action='store_false', dest='noCUDA'   ,default=False, help='Dont run with CUDA')
     parser.add_option('-o','--output'   ,action='store',type='string',dest='outputDir'   ,default='train_simple/', help='output directory')
-    parser.add_option('-c','--config'   ,action='store',type='string', dest='config', default='train_config_threelayer.yml', help='configuration file')
-    # parser.add_option('-c','--config'   ,action='store',type='string', dest='config', default='train_config_twolayer.yml', help='configuration file')
+    #parser.add_option('-c','--config'   ,action='store',type='string', dest='config', default='train_config_threelayer.yml', help='configuration file')
+    parser.add_option('-c','--config'   ,action='store',type='string', dest='config', default='train_config_twolayer.yml', help='configuration file')
     (options,args) = parser.parse_args()
-
+    
     yamlConfig = parse_config(options.config)
 
     if not os.path.isdir(options.outputDir):
@@ -81,7 +81,7 @@ if __name__ == "__main__":
         for epoch in range(Nepoch):
             y_pred = model(X_train)
             loss = loss_fn(y_pred, Y_train)
-            print(epoch, loss.data[0])
+            print(epoch, loss.item())
             Optimizer.zero_grad()
             loss.backward()
             Optimizer.step()
@@ -92,6 +92,8 @@ if __name__ == "__main__":
 #============================================================================#
 #--------------------------     Test The Model     --------------------------#
 #============================================================================#
+    
+    """
     X_test = numpy_toVar(X_test_val)
     Y_test = numpy_toVar(Y_test_val)
     output = model(X_test).data.cpu().numpy()
@@ -104,3 +106,4 @@ if __name__ == "__main__":
         tfpr, ttpr, tthreshold = roc_curve(Y_train_val[:,i], output_train[:,i])
         train_auc = auc(tfpr, ttpr)
         print("Tag %d, test AUC %f, train AUC %f " % (i, test_auc, train_auc))
+    """
